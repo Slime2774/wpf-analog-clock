@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="ClockApp.ClockControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="clockRoot">
+
+    <Grid>
+        <!-- Viewbox заставляет всё внутри сжиматься и растягиваться БЕЗ деформации пропорций -->
+        <Viewbox Stretch="Uniform">
+            <!-- Задаем фиксированную внутреннюю сетку 200 на 200, чтобы проще было считать координаты -->
+            <Grid Width="200" Height="200">
+
+                <!-- Задний фон часов (окружность) -->
+                <Ellipse x:Name="ClockFace" 
+                         Fill="{Binding ClockBackendColor, ElementName=clockRoot}" 
+                         Stroke="{Binding ArrowsColor, ElementName=clockRoot}" 
+                         StrokeThickness="4"/>
+
+                <!-- Центральная пипочка, на которой держатся стрелки -->
+                <Ellipse Fill="{Binding ArrowsColor, ElementName=clockRoot}" 
+                         Width="8" Height="8" 
+                         HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         Panel.ZIndex="10"/>
+
+                <!-- Четыре главные цифры циферблата -->
+                <TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" FontWeight="Bold" Foreground="{Binding ArrowsColor, ElementName=clockRoot}"/>
+                <TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5" FontWeight="Bold" Foreground="{Binding ArrowsColor, ElementName=clockRoot}"/>
+                <TextBlock Text="9" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" FontWeight="Bold" Foreground="{Binding ArrowsColor, ElementName=clockRoot}"/>
+                <TextBlock Text="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="Bold" Foreground="{Binding ArrowsColor, ElementName=clockRoot}"/>
+
+                <!-- RenderTransformOrigin="0.5,1" означает, что стрелка крутится вокруг своего НИЖНЕГО центра (как в жизни) -->
+
+                <!-- Часовая стрелка (Толстая, короткая) -->
+                <Rectangle Width="6" Height="45" 
+                           Fill="{Binding ArrowsColor, ElementName=clockRoot}" 
+                           HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                           Margin="0,0,0,100"
+                           RenderTransformOrigin="0.5,1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform x:Name="HourTransform" Angle="0"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <!-- Минутная стрелка (Средняя) -->
+                <Rectangle Width="4" Height="65" 
+                           Fill="{Binding ArrowsColor, ElementName=clockRoot}" 
+                           HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                           Margin="0,0,0,100"
+                           RenderTransformOrigin="0.5,1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform x:Name="MinuteTransform" Angle="0"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <!-- Секундная стрелка (Тонкая, красная) -->
+                <Rectangle Width="1.5" Height="75" 
+                           Fill="Red" 
+                           HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                           Margin="0,0,0,100"
+                           RenderTransformOrigin="0.5,1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform x:Name="SecondTransform" Angle="0"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+            </Grid>
+        </Viewbox>
+    </Grid>
+</UserControl>
